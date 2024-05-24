@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { Button } from "./components/ui/button"
+import { Button } from "./components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +9,8 @@ import {
   CardHeader,
   CardTitle
 } from "./components/ui/card"
-import { Product } from "./types"
+
+import { Product } from "./types";
 import api from "./api"
 
 import "./App.css"
@@ -18,7 +19,7 @@ function App() {
   const getProducts = async () => {
     try {
       const res = await api.get("/products")
-      return res.data
+      return res.data.data
     } catch (error) {
       console.error(error)
       return Promise.reject(new Error("Something went wrong"))
