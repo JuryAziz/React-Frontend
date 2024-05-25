@@ -1,58 +1,135 @@
-import { useQuery } from "@tanstack/react-query"
+import { ChangeEvent, FormEvent, useState } from "react"
 
-import { Button } from "./components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "./components/ui/card"
-
-import { Product } from "./types";
+import { Button } from "./components/ui/button"
+import { Input } from "./components/ui/input"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import api from "./api"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "./components/ui/select"
 
 import "./App.css"
+import Home from "./pages/Home"
+import { Category } from "./types"
 
 function App() {
-  const getProducts = async () => {
+  const queryClient = useQueryClient()
+
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    stock: "",
+    description: "",
+    categoryList: ""
+  })
+
+  const getCategories = async () => {
     try {
-      const res = await api.get("/products")
-      return res.data.data
+      const res = await api.get("/categories")
+      return res.data.data.items
     } catch (error) {
       console.error(error)
       return Promise.reject(new Error("Something went wrong"))
     }
   }
 
-  // Queries
-  const { data, error } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: getProducts
+  const { data: categories, error: cError } = useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: getCategories
   })
+  const handleChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = ev.target
+    setProduct({ ...product, [name]: value })
+  }
+
+  const postProduct = async () => {
+    try {
+      const res = await api.post("/products", product)
+      return res.data
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
+
+  const handleSubmit = async (ev: FormEvent<HTMLFormElement>): Promise<void> => {
+    ev.preventDefault()
+
+    await postProduct()
+    queryClient.invalidateQueries({ queryKey: ["products"] })
+  }
+
+  const onSelect = (ev) => {
+    setProduct({ ...product, categoryList: ev })
+  }
 
   return (
     <div className="App">
-      <h1 className="text-2xl uppercase mb-10">Products</h1>
+      <form className="my-20 w-2/3 mx-auto" onSubmit={handleSubmit}>
+        <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
 
-      <section className="flex flex-col md:flex-row gap-4 justify-between max-w-6xl mx-auto">
-        {data?.map((product) => (
-          <Card key={product.id} className="w-[350px]">
-            <CardHeader>
-              <CardTitle>{product.name}</CardTitle>
-              <CardDescription>Some Description here</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content Here</p>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full">Add to cart</Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </section>
-      {error && <p className="text-red-500">{error.message}</p>}
+        <Input
+          name="name"
+          className="my-2"
+          type="text"
+          placeholder="Name"
+          onChange={handleChange}
+        />
+        <Input
+          name="price"
+          className="my-2"
+          type="number"
+          placeholder="Price"
+          onChange={handleChange}
+        />
+        <Input
+          name="stock"
+          className="my-2"
+          type="number"
+          placeholder="Stock"
+          onChange={handleChange}
+        />
+        <Input
+          name="description"
+          className="my-2"
+          type="text"
+          placeholder="Description"
+          onChange={handleChange}
+        />
+        <Select onValueChange={onSelect}>
+          <SelectTrigger className="my-2">
+            <SelectValue placeholder="Select a Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              {categories?.map((c) => {
+                return (
+                  <SelectItem key={c.id} value={c.name}>
+                    {c.name}
+                  </SelectItem>
+                )
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <div className=" flex justify-between ">
+          <Button className="mr-1 grow" variant="outline" type="reset">
+            Reset
+          </Button>
+          <Button className="ml-1 grow" type="submit">
+            Submit
+          </Button>
+        </div>
+      </form>
+      <Home />
     </div>
   )
 }
