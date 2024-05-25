@@ -9,11 +9,6 @@ import {
   CardHeader,
   CardTitle
 } from "../components/ui/card"
-
-import { Category, Product } from "../types"
-import api from "../api"
-
-import "../App.css"
 import {
   Select,
   SelectContent,
@@ -23,9 +18,18 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { on } from "events"
+
+import { Category, Product } from "../types"
+import api from "../api"
+import "../App.css"
+import { useContext } from "react"
+import { GlobalContext } from "@/App"
 
 export default function Home() {
+  const context = useContext(GlobalContext)
+  if (!context) throw new Error("No context provided")
+  const { state, handleAddToCart } = context
+
   const getProducts = async () => {
     try {
       const res = await api.get("/products")
@@ -45,6 +49,13 @@ export default function Home() {
       return Promise.reject(new Error("Something went wrong"))
     }
   }
+
+
+  // ! ADMIN DASHBOARD !
+  // const handleDeleteProduct = (productID: string) => {
+  //   console.log("Boo")
+  // }
+
   // Queries
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
@@ -56,19 +67,16 @@ export default function Home() {
     queryFn: getCategories
   })
 
-  const handleDelete = (ev) => {
-    console.log(ev.target.value)
+  const onSelect = (value: string) => {
+    // * filter by category value contains name of the category
   }
 
-  const onSelect = (ev) => {
-    console.log(ev.target.value)
-  }
   return (
     <div className="Home">
       <h1 className="text-2xl uppercase mb-10">Products</h1>
 
-      <Select>
-        <SelectTrigger className="w-[180px]" onChange={onSelect}>
+      <Select onValueChange={onSelect}>
+        <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a Category" />
         </SelectTrigger>
         <SelectContent>
@@ -91,7 +99,7 @@ export default function Home() {
             <CardHeader>
               <CardTitle>{product.name}</CardTitle>
               <CardDescription>
-                {product.categories?.map((category: Category) => {
+                {categories?.map((category) => {
                   return category.name + ", "
                 })}
               </CardDescription>
@@ -101,11 +109,19 @@ export default function Home() {
               <p>{product.price}</p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Add to cart</Button>
-              <Button className="w-full" onClick={handleDelete}>
+              <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                Add to cart
+              </Button>
+              {
+                // ! MOVE TO ADMIN DASHBOARD !
+                /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
                 delete
               </Button>
-              <Button className="w-full">edit</Button>
+              <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
+                edit
+              </Button> */
+                // ! MOVE TO ADMIN DASHBOARD !
+              }
             </CardFooter>
           </Card>
         ))}

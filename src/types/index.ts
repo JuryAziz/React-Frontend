@@ -11,3 +11,16 @@ export type Category = {
   id: string
   name: string
 }
+
+export type Cart = {
+  products: Product[]
+}
+
+export type GlobalState = {
+  cart: Product[]
+}
+
+export type GlobalContextType = {
+  state: GlobalState,
+  handleAddToCart: (product: Product) => void
+}

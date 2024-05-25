@@ -1,56 +1,46 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
-import { Button } from "./components/ui/button"
-import { Input } from "./components/ui/input"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import api from "./api"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from "./components/ui/select"
+import Home from "./pages/Home"
+import Dashboard from "./pages/Dashboard"
 
 import "./App.css"
-import Home from "./pages/Home"
-import { Category } from "./types"
+import { createContext, useState } from "react"
+import { GlobalContextType, GlobalState, Product } from "./types"
+import api from "./api"
 
-function App() {
-  const queryClient = useQueryClient()
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />
+  }
+])
 
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    description: "",
-    categoryList: ""
+export const GlobalContext = createContext<GlobalContextType | null>(null)
+
+export default function App() {
+  const [state, setState] = useState<GlobalState>({
+    cart: []
   })
 
-  const getCategories = async () => {
-    try {
-      const res = await api.get("/categories")
-      return res.data.data.items
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
+  const handleAddToCart = async (product: Product) => {
+    setState({ ...state, cart: [...state.cart, product] })
+    await addToCart()
   }
 
-  const { data: categories, error: cError } = useQuery<Category[]>({
-    queryKey: ["categories"],
-    queryFn: getCategories
-  })
-  const handleChange = (ev: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = ev.target
-    setProduct({ ...product, [name]: value })
-  }
-
-  const postProduct = async () => {
+  // todo: u know what to do, edit this function
+  // todo: cart id to variable. product id to variable.
+  const addToCart = async () => {
     try {
-      const res = await api.post("/products", product)
+      console.log("Boo", state)
+      const res = await api.post("/cartitems", {
+        cartId: "0f7ecab1-184d-490e-941a-bd3b342d51d1",
+        productId: "5622db48-776e-44a9-985a-15e99204a60a",
+        quantity: 1
+      })
       return res.data
     } catch (error) {
       console.error(error)
@@ -58,80 +48,11 @@ function App() {
     }
   }
 
-  const handleSubmit = async (ev: FormEvent<HTMLFormElement>): Promise<void> => {
-    ev.preventDefault()
-
-    await postProduct()
-    queryClient.invalidateQueries({ queryKey: ["products"] })
-  }
-
-  const onSelect = (ev) => {
-    setProduct({ ...product, categoryList: ev })
-  }
-
   return (
     <div className="App">
-      <form className="my-20 w-2/3 mx-auto" onSubmit={handleSubmit}>
-        <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
-
-        <Input
-          name="name"
-          className="my-2"
-          type="text"
-          placeholder="Name"
-          onChange={handleChange}
-        />
-        <Input
-          name="price"
-          className="my-2"
-          type="number"
-          placeholder="Price"
-          onChange={handleChange}
-        />
-        <Input
-          name="stock"
-          className="my-2"
-          type="number"
-          placeholder="Stock"
-          onChange={handleChange}
-        />
-        <Input
-          name="description"
-          className="my-2"
-          type="text"
-          placeholder="Description"
-          onChange={handleChange}
-        />
-        <Select onValueChange={onSelect}>
-          <SelectTrigger className="my-2">
-            <SelectValue placeholder="Select a Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Categories</SelectLabel>
-              {categories?.map((c) => {
-                return (
-                  <SelectItem key={c.id} value={c.name}>
-                    {c.name}
-                  </SelectItem>
-                )
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <div className=" flex justify-between ">
-          <Button className="mr-1 grow" variant="outline" type="reset">
-            Reset
-          </Button>
-          <Button className="ml-1 grow" type="submit">
-            Submit
-          </Button>
-        </div>
-      </form>
-      <Home />
+      <GlobalContext.Provider value={{ state, handleAddToCart }}>
+        <RouterProvider router={router} />
+      </GlobalContext.Provider>
     </div>
   )
 }
-
-export default App
