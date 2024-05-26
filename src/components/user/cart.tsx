@@ -18,7 +18,7 @@ import NavBar from "../ui/navbar"
 export default function Cart() {
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
-  const { state, handleAddToCart } = context
+  const { state, handleDeleteFromCart } = context
 
   return (
     <div className="">
@@ -44,14 +44,16 @@ export default function Cart() {
                     {state.cart.map((product) => {
                       return (
                         <TableRow>
-                          <TableCell className="font-medium ml-"> {product.name} </TableCell>
+                          <TableCell className="font-medium"> {product.name} </TableCell>
                           <TableCell className="font-medium"> {product.price} </TableCell>
                           <TableCell className="font-medium"> 1 </TableCell>
                           {
                             // todo: fixed quantity for now edit later
                           }
                           <TableCell>
-                            <Button>delete</Button>
+                            <Button onClick={() => handleDeleteFromCart(product.productId)}>
+                              delete
+                            </Button>
                           </TableCell>
                         </TableRow>
                       )

@@ -35,6 +35,11 @@ export default function App() {
     setState({ ...state, cart: [...state.cart, product] })
     // await addToCart(product)
   }
+    const handleDeleteFromCart = (id: string) => {
+      const filteredCart = state.cart.filter( (product) => product.productId !== id )
+      setState({ ...state, cart: filteredCart })
+      // await addToCart(product)
+    }
   // // todo: u know what to do, edit this function
   // // todo: cart id to variable. product id to variable.
   // const addToCart = async (product: Product) => {
@@ -54,7 +59,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <GlobalContext.Provider value={{ state, handleAddToCart }}>
+      <GlobalContext.Provider value={{ state, handleAddToCart, handleDeleteFromCart}}>
         <RouterProvider router={router} />
       </GlobalContext.Provider>
     </div>
