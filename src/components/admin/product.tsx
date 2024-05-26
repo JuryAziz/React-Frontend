@@ -26,6 +26,17 @@ import { Category, Product } from "@/types"
 import api from "@/api"
 import { Tabs, TabsContent } from "../ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "../ui/alert-dialog"
 
 export default function ProductPage() {
   const queryClient = useQueryClient()
@@ -185,7 +196,8 @@ export default function ProductPage() {
                         <TableHead className="text-center">Name</TableHead>
                         <TableHead className="hidden md:table-cell text-center">Price</TableHead>
                         <TableHead className="hidden md:table-cell text-center">Quantity</TableHead>
-                        <TableHead className="hidden md:table-cell text-center"> Actions</TableHead>
+                        <TableHead className="hidden md:table-cell text-center">Category</TableHead>
+                        <TableHead className="hidden md:table-cell text-center">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -195,6 +207,10 @@ export default function ProductPage() {
                             <TableCell className="font-medium"> {product.name} </TableCell>
                             <TableCell className="font-medium"> {product.price} </TableCell>
                             <TableCell className="font-medium"> {product.stock} </TableCell>
+                            <TableCell className="font-medium">
+                              {" "}
+                              {product.categories[0]?.name}{" "}
+                            </TableCell>
                             <TableCell className="flex gap-2">
                               <Button
                                 className="w-full"
@@ -203,12 +219,33 @@ export default function ProductPage() {
                               >
                                 Edit
                               </Button>
-                              <Button
-                                className="w-full"
-                                onClick={() => handleDeleteProduct(product.productId)}
-                              >
-                                Delete
-                              </Button>
+
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button className="w-full">Delete</Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Are you absolutely sure you want to delete this product?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. This will permanently delete{" "}
+                                      <b>"{product.name}"</b> from the database.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction>
+                                      <Button
+                                        onClick={() => handleDeleteProduct(product.productId)}
+                                      >
+                                        Delete
+                                      </Button>
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
                             </TableCell>
                           </TableRow>
                         )
