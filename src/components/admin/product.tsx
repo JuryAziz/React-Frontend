@@ -24,6 +24,8 @@ import {
 
 import { Category, Product } from "@/types"
 import api from "@/api"
+import { Tabs, TabsContent } from "../ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 
 export default function ProductPage() {
   const queryClient = useQueryClient()
@@ -66,6 +68,15 @@ export default function ProductPage() {
     }
   }
 
+  const deleteProduct = async (id: string) => {
+    try {
+      const res = await api.delete(`/products/${id}`)
+      return res.data
+    } catch (error) {
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
+
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: getProducts
@@ -83,13 +94,17 @@ export default function ProductPage() {
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>): Promise<void> => {
     ev.preventDefault()
-
     await postProduct()
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
 
   const onSelect = (value: string) => {
     setProduct({ ...product, categoryList: value })
+  }
+
+  const handleDeleteProduct = async (id: string): Promise<void> => {
+    await deleteProduct(id)
+    queryClient.invalidateQueries({ queryKey: ["products"] })
   }
 
   return (
@@ -155,28 +170,57 @@ export default function ProductPage() {
       {
         //* list of products
       }
-      <div className="mx-auto max-w-4xl">
-        <Table>
-          <TableCaption>All products</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[250px]">Name</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead className="text-right">Category</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products?.map((product) => (
-              <TableRow key={product.productId}>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell className="text-right">{product.categories[0]?.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <div className="w-full mx-auto md:w-2/3">
+        <main className="grid flex-1 items-start gap-4  sm:py-0 md:gap-8">
+          <Tabs defaultValue="all">
+            <TabsContent value="all">
+              <Card x-chunk="dashboard-06-chunk-0">
+                <CardHeader>
+                  <CardTitle>Products</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-center">Name</TableHead>
+                        <TableHead className="hidden md:table-cell text-center">Price</TableHead>
+                        <TableHead className="hidden md:table-cell text-center">Quantity</TableHead>
+                        <TableHead className="hidden md:table-cell text-center"> Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {products?.map((product) => {
+                        return (
+                          <TableRow>
+                            <TableCell className="font-medium"> {product.name} </TableCell>
+                            <TableCell className="font-medium"> {product.price} </TableCell>
+                            <TableCell className="font-medium"> {product.stock} </TableCell>
+                            <TableCell className="flex gap-2">
+                              <Button
+                                className="w-full"
+                                variant="outline"
+                                // onClick={() => handleDeleteProduct(product.id)}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                className="w-full"
+                                onClick={() => handleDeleteProduct(product.productId)}
+                              >
+                                Delete
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
+                      <TableRow></TableRow>
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </main>
       </div>
     </div>
   )

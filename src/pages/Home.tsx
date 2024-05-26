@@ -123,16 +123,6 @@ export default function Home() {
                   <Button className="w-full" onClick={() => handleAddToCart(product)}>
                     Add to cart
                   </Button>
-                  {
-                    // ! MOVE TO ADMIN DASHBOARD !
-                    /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
-                delete
-              </Button>
-              <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
-                edit
-              </Button> */
-                    // ! MOVE TO ADMIN DASHBOARD !
-                  }
                 </CardFooter>
               </Card>
             </Link>
