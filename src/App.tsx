@@ -6,16 +6,20 @@ import Dashboard from "./pages/Dashboard"
 import "./App.css"
 import { createContext, useState } from "react"
 import { GlobalContextType, GlobalState, Product } from "./types"
-import api from "./api"
+import Cart from "./components/user/cart"
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/Home",
     element: <Home />
   },
   {
     path: "/dashboard",
     element: <Dashboard />
+  },
+  {
+    path: "/cart",
+    element: <Cart />
   }
 ])
 
@@ -26,27 +30,27 @@ export default function App() {
     cart: []
   })
 
-  const handleAddToCart = async (product: Product) => {
+  // * cart is in frontend for now...
+  const handleAddToCart = (product: Product) => {
     setState({ ...state, cart: [...state.cart, product] })
-    await addToCart()
+    // await addToCart(product)
   }
-
-  // todo: u know what to do, edit this function
-  // todo: cart id to variable. product id to variable.
-  const addToCart = async () => {
-    try {
-      console.log("Boo", state)
-      const res = await api.post("/cartitems", {
-        cartId: "0f7ecab1-184d-490e-941a-bd3b342d51d1",
-        productId: "5622db48-776e-44a9-985a-15e99204a60a",
-        quantity: 1
-      })
-      return res.data
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
+  // // todo: u know what to do, edit this function
+  // // todo: cart id to variable. product id to variable.
+  // const addToCart = async (product: Product) => {
+  //   try {
+  //     console.log("Boo", product)
+  //     const res = await api.post("/cartitems", {
+  //       cartId: "0f7ecab1-184d-490e-941a-bd3b342d51d1",
+  //       productId: product.productId,
+  //       quantity: 1
+  //     })
+  //     return res.data
+  //   } catch (error) {
+  //     console.error(error)
+  //     return Promise.reject(new Error("Something went wrong"))
+  //   }
+  // }
 
   return (
     <div className="App">

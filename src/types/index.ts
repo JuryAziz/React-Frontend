@@ -1,10 +1,10 @@
 export type Product = {
-  id: string
+  productId: string
   name: string
   price: number
   stock: number
   description: string
-  categories: string[]
+  categories: Category[]
 }
 
 export type Category = {
@@ -21,6 +21,6 @@ export type GlobalState = {
 }
 
 export type GlobalContextType = {
-  state: GlobalState,
+  state: GlobalState
   handleAddToCart: (product: Product) => void
 }

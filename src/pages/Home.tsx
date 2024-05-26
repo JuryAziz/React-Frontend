@@ -24,6 +24,7 @@ import api from "../api"
 import "../App.css"
 import { useContext } from "react"
 import { GlobalContext } from "@/App"
+import NavBar from "@/components/ui/navbar";
 
 export default function Home() {
   const context = useContext(GlobalContext)
@@ -50,7 +51,6 @@ export default function Home() {
     }
   }
 
-
   // ! ADMIN DASHBOARD !
   // const handleDeleteProduct = (productID: string) => {
   //   console.log("Boo")
@@ -73,6 +73,7 @@ export default function Home() {
 
   return (
     <div className="Home">
+      <NavBar />
       <h1 className="text-2xl uppercase mb-10">Products</h1>
 
       <Select onValueChange={onSelect}>
@@ -93,16 +94,12 @@ export default function Home() {
         </SelectContent>
       </Select>
 
-      <section className="flex flex-col md:flex-row gap-2 justify-around max-w-6xl mx-auto flex-wrap">
+      <section className="flex flex-col md:flex-row gap-2 justify-center max-w-6xl mx-auto flex-wrap">
         {products?.map((product) => (
-          <Card key={product.id} className="w-[350px]">
+          <Card key={product.productId} className="w-[350px]">
             <CardHeader>
               <CardTitle>{product.name}</CardTitle>
-              <CardDescription>
-                {categories?.map((category) => {
-                  return category.name + ", "
-                })}
-              </CardDescription>
+              <CardDescription>{product?.categories[0]?.name}</CardDescription>
             </CardHeader>
             <CardContent className="my-1">
               <p>{product.description}</p>
