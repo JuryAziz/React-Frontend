@@ -15,15 +15,11 @@ import { Button } from "../ui/button"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow
 } from "../ui/table"
-
-import { Category, Product } from "@/types"
-import api from "@/api"
 import { Tabs, TabsContent } from "../ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import {
@@ -37,6 +33,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "../ui/alert-dialog"
+
+import { Category, Product } from "@/types"
+import api from "@/api"
 
 export default function ProductPage() {
   const queryClient = useQueryClient()
@@ -89,14 +88,14 @@ export default function ProductPage() {
     }
   }
 
-    const editProduct = async (id: string) => {
-      try {
-        const res = await api.put(`/products/${id}`, product)
-        return res.data
-      } catch (error) {
-        return Promise.reject(new Error("Something went wrong"))
-      }
+  const editProduct = async (id: string) => {
+    try {
+      const res = await api.put(`/products/${id}`, product)
+      return res.data
+    } catch (error) {
+      return Promise.reject(new Error("Something went wrong"))
     }
+  }
 
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
@@ -223,6 +222,9 @@ export default function ProductPage() {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="text-center">Name</TableHead>
+                        <TableHead className="hidden md:table-cell text-center">
+                          Description
+                        </TableHead>
                         <TableHead className="hidden md:table-cell text-center">Price</TableHead>
                         <TableHead className="hidden md:table-cell text-center">Quantity</TableHead>
                         <TableHead className="hidden md:table-cell text-center">Category</TableHead>
@@ -234,6 +236,9 @@ export default function ProductPage() {
                         return (
                           <TableRow>
                             <TableCell className="font-medium"> {p.name} </TableCell>
+                            <TableHead className="hidden md:table-cell text-center">
+                              {p.description}
+                            </TableHead>
                             <TableCell className="font-medium"> {p.price} </TableCell>
                             <TableCell className="font-medium"> {p.stock} </TableCell>
                             <TableCell className="font-medium">{p.categories[0]?.name} </TableCell>
@@ -296,7 +301,10 @@ export default function ProductPage() {
                                           <SelectLabel>Categories</SelectLabel>
                                           {categories?.map((c) => {
                                             return (
-                                              <SelectItem key={c.id} value={product.categories[0]?.name}>
+                                              <SelectItem
+                                                key={c.id}
+                                                value={product.categories[0]?.name}
+                                              >
                                                 {c.name}
                                               </SelectItem>
                                             )

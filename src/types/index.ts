@@ -7,6 +7,7 @@ export type Product = {
   categories: Category[]
 }
 
+User
 export type Category = {
   id: string
   name: string

@@ -14,7 +14,7 @@ export default function Navbar() {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link to="/Home">
+            <Link to="/">
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

@@ -4,15 +4,24 @@ import { createContext, useState } from "react"
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import Cart from "./components/user/cart"
-import ProductDetails from "./components/user/productDetails";
+import ProductDetails from "./components/user/productDetails"
 import "./App.css"
 import { GlobalContextType, GlobalState, Product } from "./types"
-
+import Login from "./pages/Login"
+import { Signup } from "./pages/Signup"
 
 const router = createBrowserRouter([
   {
-    path: "/Home",
+    path: "/",
     element: <Home />
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/signup",
+    element: <Signup />
   },
   {
     path: "/dashboard",
@@ -24,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/product/:productId",
-    element: <ProductDetails/>
+    element: <ProductDetails />
   }
 ])
 
@@ -40,11 +49,11 @@ export default function App() {
     setState({ ...state, cart: [...state.cart, product] })
     // await addToCart(product)
   }
-    const handleDeleteFromCart = (id: string) => {
-      const filteredCart = state.cart.filter( (product) => product.productId !== id )
-      setState({ ...state, cart: filteredCart })
-      // await addToCart(product)
-    }
+  const handleDeleteFromCart = (id: string) => {
+    const filteredCart = state.cart.filter((product) => product.productId !== id)
+    setState({ ...state, cart: filteredCart })
+    // await addToCart(product)
+  }
   // // todo: u know what to do, edit this function
   // // todo: cart id to variable. product id to variable.
   // const addToCart = async (product: Product) => {
@@ -63,8 +72,8 @@ export default function App() {
   // }
 
   return (
-    <div className="App">
-      <GlobalContext.Provider value={{ state, handleAddToCart, handleDeleteFromCart}}>
+    <div className="App flex">
+      <GlobalContext.Provider value={{ state, handleAddToCart, handleDeleteFromCart }}>
         <RouterProvider router={router} />
       </GlobalContext.Provider>
     </div>
