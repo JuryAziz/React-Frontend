@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
+import { ChangeEvent, useContext, useState } from "react"
+import { Link } from "react-router-dom"
 
 import { Button } from "../components/ui/button"
 import {
@@ -18,16 +20,18 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import Navbar from "@/components/ui/navbar"
+import { Input } from "@/components/ui/input"
 
 import { Category, Product } from "../types"
 import api from "../api"
 import "../App.css"
-import { useContext } from "react"
+
 import { GlobalContext } from "@/App"
-import Navbar from "@/components/ui/navbar"
-import { Link } from "react-router-dom"
 
 export default function Home() {
+  const [searchBy, setSearchBy] = useState<string>("")
+
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
   const { state, handleAddToCart } = context
@@ -72,11 +76,17 @@ export default function Home() {
     // * filter by category value contains name of the category
   }
 
+  const handleSearch = (ev: ChangeEvent<HTMLInputElement>) => {
+    setSearchBy(ev.target.value)
+  }
+
   return (
     <div className="Home">
       <Navbar />
       <h1 className="text-2xl uppercase mb-10">Products</h1>
-
+      <div className="w-full md:w-2/3 mx-auto ">
+        <Input type="search" placeholder="Search for a product..." onChange={handleSearch}></Input>
+      </div>
       <Select onValueChange={onSelect}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a Category" />
@@ -96,35 +106,37 @@ export default function Home() {
       </Select>
 
       <section className="flex flex-col md:flex-row gap-2 justify-center max-w-6xl mx-auto flex-wrap">
-        {products?.map((product) => (
-          <Link to={`/product/${product.productId}`}>
-            <Card key={product.productId} className="w-[350px]">
-              <CardHeader>
-                <CardTitle>{product.name}</CardTitle>
-                <CardDescription>{product?.categories[0]?.name}</CardDescription>
-              </CardHeader>
-              <CardContent className="my-1">
-                <p>{product.description}</p>
-                <p>{product.price}</p>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" onClick={() => handleAddToCart(product)}>
-                  Add to cart
-                </Button>
-                {
-                  // ! MOVE TO ADMIN DASHBOARD !
-                  /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
+        {products
+          ?.filter((product) => product.name.toLowerCase().includes(searchBy.toLowerCase()))
+          .map((product) => (
+            <Link to={`/product/${product.productId}`}>
+              <Card key={product.productId} className="w-[350px]">
+                <CardHeader>
+                  <CardTitle>{product.name}</CardTitle>
+                  <CardDescription>{product?.categories[0]?.name}</CardDescription>
+                </CardHeader>
+                <CardContent className="my-1">
+                  <p>{product.description}</p>
+                  <p>{product.price}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                    Add to cart
+                  </Button>
+                  {
+                    // ! MOVE TO ADMIN DASHBOARD !
+                    /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
                 delete
               </Button>
               <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
                 edit
               </Button> */
-                  // ! MOVE TO ADMIN DASHBOARD !
-                }
-              </CardFooter>
-            </Card>
-          </Link>
-        ))}
+                    // ! MOVE TO ADMIN DASHBOARD !
+                  }
+                </CardFooter>
+              </Card>
+            </Link>
+          ))}
       </section>
       {pError && <p className="text-red-500">{pError.message}</p>}
     </div>
