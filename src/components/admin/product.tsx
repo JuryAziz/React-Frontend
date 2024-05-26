@@ -41,12 +41,13 @@ import {
 export default function ProductPage() {
   const queryClient = useQueryClient()
 
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState<Product>({
+    productId: "",
     name: "",
-    price: "",
-    stock: "",
+    price: 0,
+    stock: 0,
     description: "",
-    categoryList: ""
+    categories: []
   })
 
   const getProducts = async () => {
@@ -88,6 +89,15 @@ export default function ProductPage() {
     }
   }
 
+    const editProduct = async (id: string) => {
+      try {
+        const res = await api.put(`/products/${id}`, product)
+        return res.data
+      } catch (error) {
+        return Promise.reject(new Error("Something went wrong"))
+      }
+    }
+
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: getProducts
@@ -109,18 +119,35 @@ export default function ProductPage() {
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
 
-  const onSelect = (value: string) => {
-    setProduct({ ...product, categoryList: value })
-  }
+  // todo: fix this after editing backend to allow only one category
+  // const onSelect = (value: string) => {
+  //   setProduct({ ...product, categories: product.categories.push(value) })
+  // }
 
   const handleDeleteProduct = async (id: string): Promise<void> => {
     await deleteProduct(id)
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
-
+  const handleEditProduct = async (id: string): Promise<void> => {
+    await editProduct(id)
+    queryClient.invalidateQueries({ queryKey: ["products"] })
+  }
   return (
     <div>
-      <form className="my-20 w-2/3 mx-auto" onSubmit={handleSubmit}>
+      <form
+        className="my-20 w-2/3 mx-auto"
+        onSubmit={handleSubmit}
+        onReset={() => {
+          setProduct({
+            productId: "",
+            name: "",
+            price: 0,
+            stock: 0,
+            description: "",
+            categories: []
+          })
+        }}
+      >
         <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
 
         <Input
@@ -151,7 +178,9 @@ export default function ProductPage() {
           placeholder="Description"
           onChange={handleChange}
         />
-        <Select onValueChange={onSelect}>
+        <Select
+        // onValueChange={ onSelect }
+        >
           <SelectTrigger className="my-2">
             <SelectValue placeholder="Select a Category" />
           </SelectTrigger>
@@ -201,24 +230,94 @@ export default function ProductPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {products?.map((product) => {
+                      {products?.map((p) => {
                         return (
                           <TableRow>
-                            <TableCell className="font-medium"> {product.name} </TableCell>
-                            <TableCell className="font-medium"> {product.price} </TableCell>
-                            <TableCell className="font-medium"> {product.stock} </TableCell>
-                            <TableCell className="font-medium">
-                              {" "}
-                              {product.categories[0]?.name}{" "}
-                            </TableCell>
+                            <TableCell className="font-medium"> {p.name} </TableCell>
+                            <TableCell className="font-medium"> {p.price} </TableCell>
+                            <TableCell className="font-medium"> {p.stock} </TableCell>
+                            <TableCell className="font-medium">{p.categories[0]?.name} </TableCell>
                             <TableCell className="flex gap-2">
-                              <Button
-                                className="w-full"
-                                variant="outline"
-                                // onClick={() => handleDeleteProduct(product.id)}
-                              >
-                                Edit
-                              </Button>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button
+                                    className="w-full"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setProduct(p)
+                                    }}
+                                  >
+                                    Edit
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Edit product</AlertDialogTitle>
+                                    <Input
+                                      name="name"
+                                      className="my-2"
+                                      type="text"
+                                      placeholder="Name"
+                                      value={product.name}
+                                      onChange={handleChange}
+                                    />
+                                    <Input
+                                      name="price"
+                                      className="my-2"
+                                      type="number"
+                                      placeholder="Price"
+                                      value={product.price}
+                                      onChange={handleChange}
+                                    />
+                                    <Input
+                                      name="stock"
+                                      className="my-2"
+                                      type="number"
+                                      placeholder="Stock"
+                                      value={product.stock}
+                                      onChange={handleChange}
+                                    />
+                                    <Input
+                                      name="description"
+                                      className="my-2"
+                                      type="text"
+                                      placeholder="Description"
+                                      value={product.description}
+                                      onChange={handleChange}
+                                    />
+                                    <Select
+                                    // onValueChange={ onSelect }
+                                    >
+                                      <SelectTrigger className="my-2">
+                                        <SelectValue placeholder="Select a Category" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectGroup>
+                                          <SelectLabel>Categories</SelectLabel>
+                                          {categories?.map((c) => {
+                                            return (
+                                              <SelectItem key={c.id} value={product.categories[0]?.name}>
+                                                {c.name}
+                                              </SelectItem>
+                                            )
+                                          })}
+                                        </SelectGroup>
+                                      </SelectContent>
+                                    </Select>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel className="w-full">Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      className="w-full"
+                                      onClick={() => {
+                                        handleEditProduct(p.productId)
+                                      }}
+                                    >
+                                      Save
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
 
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
@@ -231,15 +330,13 @@ export default function ProductPage() {
                                     </AlertDialogTitle>
                                     <AlertDialogDescription>
                                       This action cannot be undone. This will permanently delete{" "}
-                                      <b>"{product.name}"</b> from the database.
+                                      <b>"{p.name}"</b> from the database.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                                     <AlertDialogAction>
-                                      <Button
-                                        onClick={() => handleDeleteProduct(product.productId)}
-                                      >
+                                      <Button onClick={() => handleDeleteProduct(p.productId)}>
                                         Delete
                                       </Button>
                                     </AlertDialogAction>
