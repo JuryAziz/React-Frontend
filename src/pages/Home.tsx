@@ -24,7 +24,8 @@ import api from "../api"
 import "../App.css"
 import { useContext } from "react"
 import { GlobalContext } from "@/App"
-import NavBar from "@/components/ui/navbar";
+import Navbar from "@/components/ui/navbar"
+import { Link } from "react-router-dom"
 
 export default function Home() {
   const context = useContext(GlobalContext)
@@ -73,7 +74,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      <NavBar />
+      <Navbar />
       <h1 className="text-2xl uppercase mb-10">Products</h1>
 
       <Select onValueChange={onSelect}>
@@ -96,31 +97,33 @@ export default function Home() {
 
       <section className="flex flex-col md:flex-row gap-2 justify-center max-w-6xl mx-auto flex-wrap">
         {products?.map((product) => (
-          <Card key={product.productId} className="w-[350px]">
-            <CardHeader>
-              <CardTitle>{product.name}</CardTitle>
-              <CardDescription>{product?.categories[0]?.name}</CardDescription>
-            </CardHeader>
-            <CardContent className="my-1">
-              <p>{product.description}</p>
-              <p>{product.price}</p>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" onClick={() => handleAddToCart(product)}>
-                Add to cart
-              </Button>
-              {
-                // ! MOVE TO ADMIN DASHBOARD !
-                /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
+          <Link to={`/product/${product.productId}`}>
+            <Card key={product.productId} className="w-[350px]">
+              <CardHeader>
+                <CardTitle>{product.name}</CardTitle>
+                <CardDescription>{product?.categories[0]?.name}</CardDescription>
+              </CardHeader>
+              <CardContent className="my-1">
+                <p>{product.description}</p>
+                <p>{product.price}</p>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                  Add to cart
+                </Button>
+                {
+                  // ! MOVE TO ADMIN DASHBOARD !
+                  /* <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
                 delete
               </Button>
               <Button className="w-full" onClick={() => handleDeleteProduct(product.id)}>
                 edit
               </Button> */
-                // ! MOVE TO ADMIN DASHBOARD !
-              }
-            </CardFooter>
-          </Card>
+                  // ! MOVE TO ADMIN DASHBOARD !
+                }
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </section>
       {pError && <p className="text-red-500">{pError.message}</p>}

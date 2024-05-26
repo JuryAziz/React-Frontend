@@ -34,10 +34,10 @@ export default function Cart() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead className="hidden md:table-cell">Price</TableHead>
-                      <TableHead className="hidden md:table-cell">Quantity</TableHead>
-                      <TableHead className="hidden md:table-cell"> Actions</TableHead>
+                      <TableHead className="text-center">Name</TableHead>
+                      <TableHead className="hidden md:table-cell text-center">Price</TableHead>
+                      <TableHead className="hidden md:table-cell text-center">Quantity</TableHead>
+                      <TableHead className="hidden md:table-cell text-center"> Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createContext, useState } from "react"
 
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
-
-import "./App.css"
-import { createContext, useState } from "react"
-import { GlobalContextType, GlobalState, Product } from "./types"
 import Cart from "./components/user/cart"
+import ProductDetails from "./components/user/productDetails";
+import "./App.css"
+import { GlobalContextType, GlobalState, Product } from "./types"
+
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <Cart />
+  },
+  {
+    path: "/product/:productId",
+    element: <ProductDetails/>
   }
 ])
 
