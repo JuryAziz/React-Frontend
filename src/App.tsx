@@ -9,6 +9,7 @@ import "./App.css"
 import { GlobalContextType, GlobalState, Product } from "./types"
 import Login from "./pages/Login"
 import { Signup } from "./pages/Signup"
+import PrivateRoute from "./components/PrivateRoute"
 
 const router = createBrowserRouter([
   {
@@ -25,11 +26,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    )
   },
   {
     path: "/cart",
-    element: <Cart />
+    element: (
+      <PrivateRoute>
+        <Cart />
+      </PrivateRoute>
+    )
   },
   {
     path: "/product/:productId",

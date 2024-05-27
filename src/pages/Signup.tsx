@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 
 export function Signup() {
   const [user, setUser] = useState({
@@ -36,7 +36,8 @@ export function Signup() {
     const token = await login()
     localStorage.setItem("token", token)
   }
-
+  if ( !localStorage.getItem( "token" ) ) return <Navigate to="/" />
+  
   return (
     <Card className="mx-auto max-w-smw-full max-w-sm m-auto text-left">
       <form action="POST" onSubmit={handleSubmit}>

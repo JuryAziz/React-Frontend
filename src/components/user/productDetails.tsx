@@ -40,7 +40,7 @@ export default function ProductDetails() {
       ) : (
         <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
           <div className="grid gap-4 md:gap-10 items-start">
-            <img
+            <img 
               alt="Product Image"
               className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
               height={400}
