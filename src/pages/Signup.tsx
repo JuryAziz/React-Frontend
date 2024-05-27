@@ -4,9 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Link, Navigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
-export function Signup() {
+export function Signup ()
+{
+  const navigate = useNavigate()
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -34,9 +36,9 @@ export function Signup() {
   const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault()
     const token = await login()
-    localStorage.setItem("token", token)
+    localStorage.setItem( "token", token )
+    navigate('/login')
   }
-  if (!localStorage.getItem("token")) return <Navigate to="/" />
 
   return (
     <Card className="mx-auto max-w-smw-full max-w-sm m-auto text-left">
