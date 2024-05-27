@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react"
-import { Link } from "react-router-dom"
+import { ChangeEvent, FormEvent, useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,8 +13,17 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import api from "@/api"
+import { GlobalContext } from "@/App"
+import { decodeUser } from "@/lib/utils"
+import { ROLE } from "@/types"
 
 export default function Login() {
+  const context = useContext(GlobalContext)
+  if (!context) throw new Error("No context provided")
+  const { handleStoreUser } = context
+
+  const navigate = useNavigate()
+
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -38,6 +47,11 @@ export default function Login() {
     ev.preventDefault()
     const token = await login()
     localStorage.setItem("token", token)
+
+    const decodedUser = decodeUser()
+    if (decodedUser) handleStoreUser(decodedUser)
+
+    decodedUser?.role === ROLE.Admin ? navigate("/dashboard") : navigate("/")
   }
 
   return (

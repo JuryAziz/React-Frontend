@@ -36,8 +36,8 @@ export function Signup() {
     const token = await login()
     localStorage.setItem("token", token)
   }
-  if ( !localStorage.getItem( "token" ) ) return <Navigate to="/" />
-  
+  if (!localStorage.getItem("token")) return <Navigate to="/" />
+
   return (
     <Card className="mx-auto max-w-smw-full max-w-sm m-auto text-left">
       <form action="POST" onSubmit={handleSubmit}>

@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard"
 import Cart from "./components/user/cart"
 import ProductDetails from "./components/user/productDetails"
 import "./App.css"
-import { GlobalContextType, GlobalState, Product } from "./types"
+import { DecodedUser, GlobalContextType, GlobalState, Product } from "./types"
 import Login from "./pages/Login"
 import { Signup } from "./pages/Signup"
 import PrivateRoute from "./components/PrivateRoute"
@@ -50,9 +50,13 @@ export const GlobalContext = createContext<GlobalContextType | null>(null)
 
 export default function App() {
   const [state, setState] = useState<GlobalState>({
-    cart: JSON.parse(localStorage.getItem("cart") as string),
+    cart: JSON.parse(localStorage.getItem("cart") as string) || [],
     user: null
   })
+
+  const handleStoreUser = (user: DecodedUser) => {
+    setState({ ...state, user: user })
+  }
 
   // * cart is in frontend for now...
   const handleAddToCart = (product: Product) => {
@@ -86,7 +90,9 @@ export default function App() {
 
   return (
     <div className="App">
-      <GlobalContext.Provider value={{ state, handleAddToCart, handleDeleteFromCart }}>
+      <GlobalContext.Provider
+        value={{ state, handleAddToCart, handleDeleteFromCart, handleStoreUser }}
+      >
         <RouterProvider router={router} />
       </GlobalContext.Provider>
     </div>

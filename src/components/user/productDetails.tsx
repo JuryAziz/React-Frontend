@@ -4,16 +4,16 @@ import { useQuery } from "@tanstack/react-query"
 
 import { Product } from "@/types"
 import api from "@/api"
-import Navbar from "../ui/navbar"
+import Navbar from "../navbar"
 import { Button } from "../ui/button"
-import { GlobalContext } from "@/App";
+import { GlobalContext } from "@/App"
 
 export default function ProductDetails() {
   const params = useParams()
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
-  const {handleAddToCart } = context
-  
+  const { handleAddToCart } = context
+
   const getProduct = async () => {
     try {
       const res = await api.get(`/products/${params.productId}`)
@@ -40,7 +40,7 @@ export default function ProductDetails() {
       ) : (
         <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
           <div className="grid gap-4 md:gap-10 items-start">
-            <img 
+            <img
               alt="Product Image"
               className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
               height={400}

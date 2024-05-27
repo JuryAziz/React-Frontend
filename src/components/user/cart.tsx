@@ -13,7 +13,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { GlobalContext } from "@/App"
-import NavBar from "../ui/navbar"
+import NavBar from "../navbar"
 
 export default function Cart() {
   const context = useContext(GlobalContext)
@@ -41,7 +41,7 @@ export default function Cart() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {state.cart.map((product) => {
+                    {state?.cart?.map((product) => {
                       return (
                         <TableRow>
                           <TableCell className="font-medium"> {product.name} </TableCell>

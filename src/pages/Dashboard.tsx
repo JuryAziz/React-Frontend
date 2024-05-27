@@ -1,5 +1,5 @@
 import Product from "@/components/admin/product"
-import Navbar from "@/components/ui/navbar"
+import Navbar from "@/components/navbar"
 
 export default function Dashboard() {
   return (

@@ -4,7 +4,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle
-} from "./navigation-menu"
+} from "./ui/navigation-menu"
 
 import { Link } from "react-router-dom"
 

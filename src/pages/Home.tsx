@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import Navbar from "@/components/ui/navbar"
+import Navbar from "@/components/navbar"
 import { Input } from "@/components/ui/input"
 
 import { Category, Product } from "../types"
