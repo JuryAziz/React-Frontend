@@ -14,6 +14,7 @@ export default function PrivateRoute({ children }: { children: ReactElement }) {
 
   const decodedToken = jwt<DecodedToken>(token)
 
+  // todo: fix typing
   const decodedUser: any = {}
 
   for (const [key, value] of Object.entries(decodedToken)) {
@@ -24,7 +25,7 @@ export default function PrivateRoute({ children }: { children: ReactElement }) {
     }
     decodedUser[key] = value.toString()
   }
-  
+
   if (decodedUser.role === ROLE.User && children.type === Dashboard) return <Navigate to="/" />
 
   return children

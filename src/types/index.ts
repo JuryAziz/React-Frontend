@@ -41,6 +41,7 @@ export type DecodedToken = {
 }
 export type GlobalState = {
   cart: Product[]
+  user: DecodedUser | null
 }
 
 export type GlobalContextType = {
