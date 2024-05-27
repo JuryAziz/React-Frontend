@@ -39,7 +39,7 @@ export function Signup() {
 
   return (
     <Card className="mx-auto max-w-smw-full max-w-sm m-auto text-left">
-      <form onSubmit={handleSubmit}>
+      <form action="POST" onSubmit={handleSubmit}>
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>Enter your information to create an account</CardDescription>

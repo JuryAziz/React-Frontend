@@ -12,14 +12,7 @@ import {
   SelectValue
 } from "../ui/select"
 import { Button } from "../ui/button"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from "../ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Tabs, TabsContent } from "../ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import {
@@ -132,9 +125,9 @@ export default function ProductPage() {
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
   return (
-    <div>
+    <div className="w-full">
       <form
-        className="my-20 w-2/3 mx-auto"
+        className="my-20 md:w-2/3 w-full mx-auto"
         onSubmit={handleSubmit}
         onReset={() => {
           setProduct({
@@ -209,8 +202,8 @@ export default function ProductPage() {
       {
         //* list of products
       }
-      <div className="w-full mx-auto md:w-2/3">
-        <main className="grid flex-1 items-start gap-4  sm:py-0 md:gap-8">
+      <section className="w-full md:w-3/4 mx-auto">
+        <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0">
@@ -363,7 +356,7 @@ export default function ProductPage() {
             </TabsContent>
           </Tabs>
         </main>
-      </div>
+      </section>
     </div>
   )
 }

@@ -15,7 +15,6 @@ import { Label } from "@/components/ui/label"
 import api from "@/api"
 
 export default function Login() {
-
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -26,8 +25,7 @@ export default function Login() {
       const res = await api.post(`/auth/login`, user)
       return res.data.data.token
     } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
+      return Promise.reject(new Error("Unable to verify credentials"))
     }
   }
 
@@ -39,7 +37,7 @@ export default function Login() {
   const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault()
     const token = await login()
-    localStorage.setItem( "token", token )
+    localStorage.setItem("token", token)
   }
 
   return (

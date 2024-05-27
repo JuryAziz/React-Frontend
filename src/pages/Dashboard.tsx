@@ -3,7 +3,7 @@ import Navbar from "@/components/ui/navbar"
 
 export default function Dashboard() {
   return (
-    <div>
+    <div className="mx-auto">
       <Navbar />
       <Product />
     </div>

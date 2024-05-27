@@ -72,7 +72,7 @@ export default function App() {
   // }
 
   return (
-    <div className="App flex">
+    <div className="App">
       <GlobalContext.Provider value={{ state, handleAddToCart, handleDeleteFromCart }}>
         <RouterProvider router={router} />
       </GlobalContext.Provider>

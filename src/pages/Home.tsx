@@ -34,7 +34,7 @@ export default function Home() {
 
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
-  const { state, handleAddToCart } = context
+  const {handleAddToCart } = context
 
   const getProducts = async () => {
     try {
@@ -56,11 +56,6 @@ export default function Home() {
     }
   }
 
-  // ! ADMIN DASHBOARD !
-  // const handleDeleteProduct = (productID: string) => {
-  //   console.log("Boo")
-  // }
-
   // Queries
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
@@ -81,36 +76,38 @@ export default function Home() {
   }
 
   return (
-    <div className="Home">
+    <div className="mx-auto">
       <Navbar />
       <h1 className="text-2xl uppercase mb-10">Products</h1>
       <div className="w-full md:w-2/3 mx-auto ">
         <Input type="search" placeholder="Search for a product..." onChange={handleSearch}></Input>
       </div>
-      <Select onValueChange={onSelect}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a Category" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Categories</SelectLabel>
-            {categories?.map((c) => {
-              return (
-                <SelectItem key={c.id} value={c.name}>
-                  {c.name}
-                </SelectItem>
-              )
-            })}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <div className="flex justify-center p-3 pt-6">
+        <Select onValueChange={onSelect}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              {categories?.map((c) => {
+                return (
+                  <SelectItem key={c.id} value={c.name}>
+                    {c.name}
+                  </SelectItem>
+                )
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
 
       <section className="flex flex-col md:flex-row gap-2 justify-center max-w-6xl mx-auto flex-wrap">
         {products
           ?.filter((product) => product.name.toLowerCase().includes(searchBy.toLowerCase()))
           .map((product) => (
-            <Link to={`/product/${product.productId}`}>
-              <Card key={product.productId} className="w-[350px]">
+            <Card key={product.productId} className="w-[350px] h-[250px]">
+              <Link to={`/product/${product.productId}`}>
                 <CardHeader>
                   <CardTitle>{product.name}</CardTitle>
                   <CardDescription>{product?.categories[0]?.name}</CardDescription>
@@ -118,14 +115,14 @@ export default function Home() {
                 <CardContent className="my-1">
                   <p>{product.description}</p>
                   <p>{product.price}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full" onClick={() => handleAddToCart(product)}>
-                    Add to cart
-                  </Button>
-                </CardFooter>
-              </Card>
-            </Link>
+                </CardContent>{" "}
+              </Link>
+              <CardFooter>
+                <Button className="w-full" onClick={() => handleAddToCart(product)}>
+                  Add to cart
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
       </section>
       {pError && <p className="text-red-500">{pError.message}</p>}

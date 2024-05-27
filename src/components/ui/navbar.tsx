@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 
 export default function Navbar() {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mb-20">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
