@@ -7,6 +7,15 @@ export type Product = {
   category: string
 }
 
+export type User = {
+  userId: string
+  email: string
+  phoneNumber: string
+  firstName: string
+  lastName: string
+  role: number
+}
+
 export type Category = {
   categoryId: string
   name: string

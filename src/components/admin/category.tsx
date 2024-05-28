@@ -30,7 +30,7 @@ export default function CategoryPage() {
     description: ""
   })
 
-  const { data: categories, error: cError } = useQuery<Category[]>({
+  const { data: categories, error} = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: categoryService.getCategories
   })
