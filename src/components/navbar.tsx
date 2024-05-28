@@ -12,6 +12,7 @@ import {
 import { GlobalContext } from "@/App"
 import { ROLE } from "@/types"
 import { decodeUser } from "@/lib/utils"
+import { ModeToggle } from "./mode-toggle";
 
 export default function Navbar() {
   const context = useContext(GlobalContext)
@@ -38,7 +39,7 @@ export default function Navbar() {
               </Link>
             </NavigationMenuItem>
           )}
-          {role === ROLE.User ? (
+          {role === ROLE.User && (
             <NavigationMenuItem>
               <Link to="/Cart">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -46,14 +47,15 @@ export default function Navbar() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-          ) : state.user ? (
+          )}
+          {state.user ? (
             <NavigationMenuItem>
               <Link to="/login">
                 <NavigationMenuLink
                   className={navigationMenuTriggerStyle()}
                   onClick={() => {
                     localStorage.removeItem("token")
-                    localStorage.removeItem( "user" )
+                    localStorage.removeItem("user")
                     handleLogout()
                   }}
                 >
@@ -70,6 +72,9 @@ export default function Navbar() {
               </Link>
             </NavigationMenuItem>
           )}
+          <NavigationMenuItem>
+            <ModeToggle />
+          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
     </div>

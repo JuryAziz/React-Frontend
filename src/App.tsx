@@ -11,6 +11,8 @@ import Login from "./pages/Login"
 import { Signup } from "./pages/Signup"
 import PrivateRoute from "./components/PrivateRoute"
 
+import { ThemeProvider } from "@/components/theme-provider"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,39 +68,21 @@ export default function App() {
   const handleAddToCart = (product: Product) => {
     setState({ ...state, cart: [...state.cart, product] })
     localStorage.setItem("cart", JSON.stringify([...state.cart, product]))
-    // await addToCart(product)
   }
+
   const handleDeleteFromCart = (id: string) => {
     const filteredCart = state.cart.filter((product) => product.productId !== id)
     setState({ ...state, cart: filteredCart })
     localStorage.setItem("cart", JSON.stringify(filteredCart))
-    // await addToCart(product)
   }
 
-  // // todo: u know what to do, edit this function
-  // // todo: cart id to variable. product id to variable.
-  // const addToCart = async (product: Product) => {
-  //   try {
-  //     console.log("Boo", product)
-  //     const res = await api.post("/cartitems", {
-  //       cartId: "0f7ecab1-184d-490e-941a-bd3b342d51d1",
-  //       productId: product.productId,
-  //       quantity: 1
-  //     })
-  //     return res.data
-  //   } catch (error) {
-  //     console.error(error)
-  //     return Promise.reject(new Error("Something went wrong"))
-  //   }
-  // }
-
   return (
-    <div className="App">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <GlobalContext.Provider
         value={{ state, handleLogout, handleAddToCart, handleDeleteFromCart, handleStoreUser }}
       >
         <RouterProvider router={router} />
       </GlobalContext.Provider>
-    </div>
+    </ThemeProvider>
   )
 }
