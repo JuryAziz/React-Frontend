@@ -40,7 +40,7 @@ export default function ProductPage() {
     price: 0,
     stock: 0,
     description: "",
-    categories: []
+    category: ""
   })
 
   const getCategories = async () => {
@@ -72,16 +72,29 @@ export default function ProductPage() {
     ev.preventDefault()
     await productService.postProduct(product)
     queryClient.invalidateQueries({ queryKey: ["products"] })
+    resetProduct
   }
 
-  // todo: fix this after editing backend to allow only one category
-  // const onSelect = (value: string) => {
-  //   setProduct({ ...product, categories: product.categories.push(value) })
-  // }
-
+  const onSelect = (value: string) => {
+    setProduct({
+      ...product,
+      category: value
+    })
+  }
+  const resetProduct = () => {
+    setProduct({
+      productId: "",
+      name: "",
+      price: 0,
+      stock: 0,
+      description: "",
+      category: ""
+    })
+  }
   const handleDeleteProduct = async (id: string): Promise<void> => {
     await productService.deleteProduct(id)
     queryClient.invalidateQueries({ queryKey: ["products"] })
+    resetProduct
   }
   const handleEditProduct = async (id: string): Promise<void> => {
     await productService.editProduct(id, product)
@@ -92,19 +105,9 @@ export default function ProductPage() {
       <form
         className="my-20 md:w-2/3 w-full mx-auto"
         onSubmit={handleSubmit}
-        onReset={() => {
-          setProduct({
-            productId: "",
-            name: "",
-            price: 0,
-            stock: 0,
-            description: "",
-            categories: []
-          })
-        }}
+        onReset={resetProduct}
       >
         <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
-
         <Input
           name="name"
           className="my-2"
@@ -133,9 +136,7 @@ export default function ProductPage() {
           placeholder="Description"
           onChange={handleChange}
         />
-        <Select
-        // onValueChange={ onSelect }
-        >
+        <Select onValueChange={onSelect}>
           <SelectTrigger className="my-2">
             <SelectValue placeholder="Select a Category" />
           </SelectTrigger>
@@ -197,7 +198,7 @@ export default function ProductPage() {
                             </TableHead>
                             <TableCell className="font-medium"> {p.price} </TableCell>
                             <TableCell className="font-medium"> {p.stock} </TableCell>
-                            <TableCell className="font-medium">{p.categories[0]?.name} </TableCell>
+                            <TableCell className="font-medium">{p.category?.name} </TableCell>
                             <TableCell className="flex gap-2">
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
@@ -246,9 +247,7 @@ export default function ProductPage() {
                                       value={product.description}
                                       onChange={handleChange}
                                     />
-                                    <Select
-                                    // onValueChange={ onSelect }
-                                    >
+                                    <Select onValueChange={onSelect}>
                                       <SelectTrigger className="my-2">
                                         <SelectValue placeholder="Select a Category" />
                                       </SelectTrigger>
@@ -257,10 +256,7 @@ export default function ProductPage() {
                                           <SelectLabel>Categories</SelectLabel>
                                           {categories?.map((c) => {
                                             return (
-                                              <SelectItem
-                                                key={c.id}
-                                                value={product.categories[0]?.name}
-                                              >
+                                              <SelectItem key={c.id} value={c.name}>
                                                 {c.name}
                                               </SelectItem>
                                             )

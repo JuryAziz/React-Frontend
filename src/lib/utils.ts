@@ -8,8 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function decodeUser(): DecodedUser | null {
-  const token = localStorage.getItem( "token" )
-  
+  const token = localStorage.getItem("token")
+
   if (!token) return null
   const decodedToken = jwt<DecodedToken>(token)
 

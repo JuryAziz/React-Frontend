@@ -1,5 +1,8 @@
-import { useContext } from "react"
-import {
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+
+import
+  {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -7,7 +10,6 @@ import {
   navigationMenuTriggerStyle
 } from "./ui/navigation-menu"
 
-import { Link } from "react-router-dom"
 import { GlobalContext } from "@/App"
 import { ROLE } from "@/types"
 
@@ -41,6 +43,14 @@ export default function Navbar() {
               <Link to="/Cart">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Cart
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          ) : state ? (
+            <NavigationMenuItem>
+              <Link to="/login">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Signout
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>

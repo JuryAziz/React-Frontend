@@ -13,7 +13,7 @@ export default function PrivateRoute({ children }: { children: ReactElement }) {
   if (!decodedUser && children.type === Dashboard) return <Navigate to="/login" />
   if (!decodedUser) return <Navigate to="/" />
 
-  if (decodedUser?.role === ROLE.User && children.type === Dashboard) return <Navigate to="/" />
+  // if (decodedUser?.role === ROLE.User && children.type === Dashboard) return <Navigate to="/" />
 
   return children
 }

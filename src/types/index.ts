@@ -4,7 +4,16 @@ export type Product = {
   price: number
   stock: number
   description: string
-  categories: Category[]
+  category: string
+}
+
+export type apiProduct = {
+  productId: string
+  name: string
+  price: number
+  stock: number
+  description: string
+  category: string
 }
 
 export type Category = {

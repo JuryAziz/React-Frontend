@@ -99,7 +99,7 @@ export default function Home() {
               <Link to={`/product/${product.productId}`}>
                 <CardHeader>
                   <CardTitle>{product.name}</CardTitle>
-                  <CardDescription>{product?.categories[0]?.name}</CardDescription>
+                  <CardDescription>{product.category?.name}</CardDescription>
                 </CardHeader>
                 <CardContent className="my-1">
                   <p>{product.description}</p>
