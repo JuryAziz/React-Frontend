@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, createContext, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { Input } from "../ui/input"
@@ -29,6 +29,7 @@ import {
 
 import { Category, Product } from "@/types"
 import api from "@/api"
+import productService from "@/api/products"
 
 export default function ProductPage() {
   const queryClient = useQueryClient()
@@ -42,16 +43,6 @@ export default function ProductPage() {
     categories: []
   })
 
-  const getProducts = async () => {
-    try {
-      const res = await api.get("/products")
-      return res.data.data.items
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
-
   const getCategories = async () => {
     try {
       const res = await api.get("/categories")
@@ -62,37 +53,9 @@ export default function ProductPage() {
     }
   }
 
-  const postProduct = async () => {
-    try {
-      const res = await api.post("/products", product)
-      return res.data
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
-
-  const deleteProduct = async (id: string) => {
-    try {
-      const res = await api.delete(`/products/${id}`)
-      return res.data
-    } catch (error) {
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
-
-  const editProduct = async (id: string) => {
-    try {
-      const res = await api.put(`/products/${id}`, product)
-      return res.data
-    } catch (error) {
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
-
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
-    queryFn: getProducts
+    queryFn: productService.getProducts
   })
 
   const { data: categories, error: cError } = useQuery<Category[]>({
@@ -107,7 +70,7 @@ export default function ProductPage() {
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>): Promise<void> => {
     ev.preventDefault()
-    await postProduct()
+    await productService.postProduct(product)
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
 
@@ -117,11 +80,11 @@ export default function ProductPage() {
   // }
 
   const handleDeleteProduct = async (id: string): Promise<void> => {
-    await deleteProduct(id)
+    await productService.deleteProduct(id)
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
   const handleEditProduct = async (id: string): Promise<void> => {
-    await editProduct(id)
+    await productService.editProduct(id, product)
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
   return (

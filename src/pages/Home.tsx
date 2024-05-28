@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ChangeEvent, useContext, useState } from "react"
 import { Link } from "react-router-dom"
 
-import { Button } from "../components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from "../components/ui/card"
+} from "@/components/ui/card"
 import {
   Select,
   SelectContent,
@@ -20,31 +20,20 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import Navbar from "@/components/navbar"
 import { Input } from "@/components/ui/input"
-
-import { Category, Product } from "../types"
-import api from "../api"
-import "../App.css"
+import Navbar from "@/components/navbar"
 
 import { GlobalContext } from "@/App"
+import { Category, Product } from "@/types"
+import productServices from "@/api/products"
+import api from "@/api"
 
 export default function Home() {
   const [searchBy, setSearchBy] = useState<string>("")
 
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
-  const {handleAddToCart } = context
-
-  const getProducts = async () => {
-    try {
-      const res = await api.get("/products")
-      return res.data.data.items
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
+  const { handleAddToCart } = context
 
   const getCategories = async () => {
     try {
@@ -59,7 +48,7 @@ export default function Home() {
   // Queries
   const { data: products, error: pError } = useQuery<Product[]>({
     queryKey: ["products"],
-    queryFn: getProducts
+    queryFn: productServices.getProducts
   })
 
   const { data: categories, error: cError } = useQuery<Category[]>({
