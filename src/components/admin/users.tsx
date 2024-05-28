@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger
 } from "../ui/alert-dialog"
 
-import { User } from "@/types"
+import { Role, User } from "@/types"
 import userService from "@/api/users"
 
 export default function users() {
@@ -88,13 +88,13 @@ export default function users() {
                           <TableRow>
                             <TableCell className="font-medium">
                               {" "}
-                              {u.firstName + u.lastName}{" "}
+                              {u.firstName + " " + u.lastName}{" "}
                             </TableCell>
                             <TableCell className="font-medium"> {u.email} </TableCell>
 
                             <TableCell className="font-medium"> {u.phoneNumber} </TableCell>
 
-                            <TableCell className="font-medium"> {u.role} </TableCell>
+                            <TableCell className="font-medium"> {Role[u.role]} </TableCell>
                             <TableCell className="flex gap-2">
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>

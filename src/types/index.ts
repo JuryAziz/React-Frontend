@@ -26,6 +26,12 @@ export type Cart = {
   products: Product[]
 }
 
+export const Role = {
+  0: "User",
+  1: "Admin",
+  3: "Banned"
+} as const
+
 export const ROLE = {
   Admin: "Admin",
   User: "User"

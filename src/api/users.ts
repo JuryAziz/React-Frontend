@@ -22,7 +22,9 @@ export default {
   },
   deleteUser: async (id: string) => {
     try {
-      const res = await api.delete(`/users/${id}`)
+      const res = await api.delete(`/users/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
       return res.data
     } catch (error) {
       return Promise.reject(new Error("Something went wrong"))
@@ -31,7 +33,9 @@ export default {
 
   editUser: async (id: string, user: User) => {
     try {
-      const res = await api.put(`/users/${id}`, user)
+      const res = await api.put(`/users/${id}`, user, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
       return res.data
     } catch (error) {
       return Promise.reject(new Error("Something went wrong"))
