@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react"
+import { Link } from "react-router-dom"
 
-import
-  {
+import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -12,13 +11,14 @@ import
 
 import { GlobalContext } from "@/App"
 import { ROLE } from "@/types"
+import { decodeUser } from "@/lib/utils"
 
 export default function Navbar() {
   const context = useContext(GlobalContext)
   if (!context) throw new Error("No context provided")
-  const { state } = context
+  const { state, handleLogout } = context
 
-  const role = state?.user?.role
+  const role = decodeUser()?.role
 
   return (
     <div className="flex justify-center mb-20">
@@ -46,11 +46,18 @@ export default function Navbar() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-          ) : state ? (
+          ) : state.user ? (
             <NavigationMenuItem>
               <Link to="/login">
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Signout
+                <NavigationMenuLink
+                  className={navigationMenuTriggerStyle()}
+                  onClick={() => {
+                    localStorage.removeItem("token")
+                    localStorage.removeItem( "user" )
+                    handleLogout()
+                  }}
+                >
+                  Logout
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>

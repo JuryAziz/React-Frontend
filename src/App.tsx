@@ -58,6 +58,10 @@ export default function App() {
     setState({ ...state, user: user })
   }
 
+  const handleLogout = () => {
+    setState({ ...state, user: null })
+  }
+
   // * cart is in frontend for now...
   const handleAddToCart = (product: Product) => {
     setState({ ...state, cart: [...state.cart, product] })
@@ -91,7 +95,7 @@ export default function App() {
   return (
     <div className="App">
       <GlobalContext.Provider
-        value={{ state, handleAddToCart, handleDeleteFromCart, handleStoreUser }}
+        value={{ state, handleLogout, handleAddToCart, handleDeleteFromCart, handleStoreUser }}
       >
         <RouterProvider router={router} />
       </GlobalContext.Provider>

@@ -65,4 +65,5 @@ export type GlobalContextType = {
   handleAddToCart: (product: Product) => void
   handleDeleteFromCart: (id: string) => void
   handleStoreUser: (user: DecodedUser) => void
+  handleLogout: () => void
 }
