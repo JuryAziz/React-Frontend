@@ -2,15 +2,6 @@ import { ChangeEvent, FormEvent, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { Input } from "../ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from "../ui/select"
 import { Button } from "../ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Tabs, TabsContent } from "../ui/tabs"
@@ -27,25 +18,16 @@ import {
   AlertDialogTrigger
 } from "../ui/alert-dialog"
 
-import { Category, Product } from "@/types"
-import productService from "@/api/products"
+import { Category } from "@/types"
 import categoryService from "@/api/categories"
 
-export default function ProductPage() {
+export default function CategoryPage() {
   const queryClient = useQueryClient()
 
-  const [product, setProduct] = useState<Product>({
-    productId: "",
+  const [category, setCategory] = useState<Category>({
     name: "",
-    price: 0,
-    stock: 0,
-    description: "",
-    category: ""
-  })
-
-  const { data: products, error: pError } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: productService.getProducts
+    categoryId: "",
+    description: ""
   })
 
   const { data: categories, error: cError } = useQuery<Category[]>({
@@ -55,67 +37,46 @@ export default function ProductPage() {
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = ev.target
-    setProduct({ ...product, [name]: value })
+    setCategory({ ...category, [name]: value })
   }
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>): Promise<void> => {
     ev.preventDefault()
-    await productService.postProduct(product)
-    queryClient.invalidateQueries({ queryKey: ["products"] })
+    await categoryService.postCategory(category)
+    queryClient.invalidateQueries({ queryKey: ["categories"] })
   }
 
-  const onSelect = (value: string) => {
-    setProduct({
-      ...product,
-      category: value
-    })
-  }
-  const resetProduct = () => {
-    setProduct({
-      productId: "",
+  const resetCategory = () => {
+    setCategory({
+      categoryId: "",
       name: "",
-      price: 0,
-      stock: 0,
-      description: "",
-      category: ""
+      description: ""
     })
   }
-  const handleDeleteProduct = async (id: string): Promise<void> => {
-    await productService.deleteProduct(id)
-    queryClient.invalidateQueries({ queryKey: ["products"] })
+
+  const handleDeleteCategory = async (id: string): Promise<void> => {
+    await categoryService.deleteCategory(id)
+    queryClient.invalidateQueries({ queryKey: ["categories"] })
   }
-  const handleEditProduct = async (id: string): Promise<void> => {
-    await productService.editProduct(id, product)
-    queryClient.invalidateQueries({ queryKey: ["products"] })
-    resetProduct
+  const handleEditCategory = async (id: string): Promise<void> => {
+    await categoryService.editCategory(id, category)
+    queryClient.invalidateQueries({ queryKey: ["categories"] })
+    resetCategory
   }
+
   return (
     <div className="w-full">
       <form
         className="my-20 md:w-2/3 w-full mx-auto"
         onSubmit={handleSubmit}
-        onReset={resetProduct}
+        onReset={resetCategory}
       >
-        <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
+        <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter ">Add new Category</h3>
         <Input
           name="name"
           className="my-2"
           type="text"
           placeholder="Name"
-          onChange={handleChange}
-        />
-        <Input
-          name="price"
-          className="my-2"
-          type="number"
-          placeholder="Price"
-          onChange={handleChange}
-        />
-        <Input
-          name="stock"
-          className="my-2"
-          type="number"
-          placeholder="Stock"
           onChange={handleChange}
         />
         <Input
@@ -125,23 +86,6 @@ export default function ProductPage() {
           placeholder="Description"
           onChange={handleChange}
         />
-        <Select onValueChange={onSelect}>
-          <SelectTrigger className="my-2">
-            <SelectValue placeholder="Select a Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Categories</SelectLabel>
-              {categories?.map((c) => {
-                return (
-                  <SelectItem key={c.categoryId} value={c.name}>
-                    {c.name}
-                  </SelectItem>
-                )
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
 
         <div className=" flex justify-between ">
           <Button className="mr-1 grow" variant="outline" type="reset">
@@ -153,7 +97,7 @@ export default function ProductPage() {
         </div>
       </form>
       {
-        //* list of products
+        //* list of categories
       }
       <section className="w-full md:w-3/4 mx-auto">
         <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
@@ -161,33 +105,23 @@ export default function ProductPage() {
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0">
                 <CardHeader>
-                  <CardTitle>Products</CardTitle>
+                  <CardTitle>Categories</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead className="text-center">Name</TableHead>
-                        <TableHead className="hidden md:table-cell text-center">
-                          Description
-                        </TableHead>
-                        <TableHead className="hidden md:table-cell text-center">Price</TableHead>
-                        <TableHead className="hidden md:table-cell text-center">Quantity</TableHead>
-                        <TableHead className="hidden md:table-cell text-center">Category</TableHead>
+                        <TableHead className="text-center">Description</TableHead>
                         <TableHead className="hidden md:table-cell text-center">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {products?.map((p) => {
+                      {categories?.map((c) => {
                         return (
                           <TableRow>
-                            <TableCell className="font-medium"> {p.name} </TableCell>
-                            <TableHead className="hidden md:table-cell text-center">
-                              {p.description}
-                            </TableHead>
-                            <TableCell className="font-medium"> {p.price} </TableCell>
-                            <TableCell className="font-medium"> {p.stock} </TableCell>
-                            <TableCell className="font-medium">{p.category?.name} </TableCell>
+                            <TableCell className="font-medium"> {c.name} </TableCell>
+                            <TableCell className="font-medium"> {c.description} </TableCell>
                             <TableCell className="flex gap-2">
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
@@ -195,7 +129,7 @@ export default function ProductPage() {
                                     className="w-full"
                                     variant="outline"
                                     onClick={() => {
-                                      setProduct({ ...p, category: p.category?.name })
+                                      setCategory({ ...c, name: c.name })
                                     }}
                                   >
                                     Edit
@@ -203,29 +137,13 @@ export default function ProductPage() {
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle>Edit product</AlertDialogTitle>
+                                    <AlertDialogTitle>Edit Category</AlertDialogTitle>
                                     <Input
                                       name="name"
                                       className="my-2"
                                       type="text"
                                       placeholder="Name"
-                                      value={product.name}
-                                      onChange={handleChange}
-                                    />
-                                    <Input
-                                      name="price"
-                                      className="my-2"
-                                      type="number"
-                                      placeholder="Price"
-                                      value={product.price}
-                                      onChange={handleChange}
-                                    />
-                                    <Input
-                                      name="stock"
-                                      className="my-2"
-                                      type="number"
-                                      placeholder="Stock"
-                                      value={product.stock}
+                                      value={category.name}
                                       onChange={handleChange}
                                     />
                                     <Input
@@ -233,32 +151,15 @@ export default function ProductPage() {
                                       className="my-2"
                                       type="text"
                                       placeholder="Description"
-                                      value={product.description}
+                                      value={category.description}
                                       onChange={handleChange}
                                     />
-                                    <Select onValueChange={onSelect}>
-                                      <SelectTrigger className="my-2">
-                                        <SelectValue placeholder="Select a Category" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        <SelectGroup>
-                                          <SelectLabel>Categories</SelectLabel>
-                                          {categories?.map((c) => {
-                                            return (
-                                              <SelectItem key={c.categoryId} value={c.name}>
-                                                {c.name}
-                                              </SelectItem>
-                                            )
-                                          })}
-                                        </SelectGroup>
-                                      </SelectContent>
-                                    </Select>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel
                                       className="w-full"
                                       onClick={() => {
-                                        resetProduct
+                                        resetCategory
                                       }}
                                     >
                                       Cancel
@@ -266,7 +167,7 @@ export default function ProductPage() {
                                     <AlertDialogAction
                                       className="w-full"
                                       onClick={() => {
-                                        handleEditProduct(p.productId)
+                                        handleEditCategory(c.categoryId)
                                       }}
                                     >
                                       Save
@@ -282,17 +183,17 @@ export default function ProductPage() {
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                      Are you absolutely sure you want to delete this product?
+                                      Are you absolutely sure you want to delete this category?
                                     </AlertDialogTitle>
                                     <AlertDialogDescription>
                                       This action cannot be undone. This will permanently delete{" "}
-                                      <b>"{p.name}"</b> from the database.
+                                      <b>"{c.name}"</b> from the database.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                                     <AlertDialogAction>
-                                      <Button onClick={() => handleDeleteProduct(p.productId)}>
+                                      <Button onClick={() => handleDeleteCategory(c.categoryId)}>
                                         Delete
                                       </Button>
                                     </AlertDialogAction>

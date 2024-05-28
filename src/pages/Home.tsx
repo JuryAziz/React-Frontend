@@ -81,7 +81,7 @@ export default function Home() {
               <SelectLabel>Categories</SelectLabel>
               {categories?.map((c) => {
                 return (
-                  <SelectItem key={c.id} value={c.name}>
+                  <SelectItem key={c.categoryId} value={c.name}>
                     {c.name}
                   </SelectItem>
                 )

@@ -7,18 +7,10 @@ export type Product = {
   category: string
 }
 
-export type apiProduct = {
-  productId: string
-  name: string
-  price: number
-  stock: number
-  description: string
-  category: string
-}
-
 export type Category = {
-  id: string
+  categoryId: string
   name: string
+  description: string
 }
 
 export type Cart = {
