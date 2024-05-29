@@ -12,7 +12,7 @@ import {
 import { GlobalContext } from "@/App"
 import { ROLE } from "@/types"
 import { decodeUser } from "@/lib/utils"
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "./mode-toggle"
 
 export default function Navbar() {
   const context = useContext(GlobalContext)
@@ -48,9 +48,18 @@ export default function Navbar() {
               </Link>
             </NavigationMenuItem>
           )}
+          {role === ROLE.User && (
+            <NavigationMenuItem>
+              <Link to="/Profile">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Profile
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          )}
           {state.user ? (
             <NavigationMenuItem>
-              <Link to="/login">
+              <Link to="/">
                 <NavigationMenuLink
                   className={navigationMenuTriggerStyle()}
                   onClick={() => {

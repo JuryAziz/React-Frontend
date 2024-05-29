@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { FileUploaderMinimal } from "@uploadcare/react-uploader"
 
 import { Input } from "../ui/input"
 import {
@@ -99,14 +98,6 @@ export default function ProductPage() {
         onReset={resetProduct}
       >
         <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
-
-        <FileUploaderMinimal
-          pubkey="cab88e23d5230efdabfd"
-          maxLocalFileSizeBytes={10000000}
-          multiple={false}
-          imgOnly={true}
-        />
-
         <Input
           name="name"
           className="my-2"
