@@ -100,7 +100,7 @@ export default function Home() {
                 <CardHeader>
                   <img
                     alt="Product Image"
-                    className="aspect-square object-contain w-full h- rounded-lg overflow-hidden"
+                    className="aspect-square object-cover w-full rounded-lg overflow-hidden"
                     src={product?.thumbnail}
                   />
                   <CardTitle>{product.name}</CardTitle>
