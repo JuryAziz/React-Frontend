@@ -1,8 +1,6 @@
 import React, { useContext } from "react"
 import { useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-
-import { Product } from "@/types"
 import api from "@/api"
 import Navbar from "../navbar"
 import { Button } from "../ui/button"
@@ -43,9 +41,9 @@ export default function ProductDetails() {
             <img
               alt="Product Image"
               className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-              height={400}
-              src="/placeholder.svg"
-              width={400}
+              height={300}
+              src={product?.thumbnail}
+              width={300}
             />
           </div>
           <div className="grid gap-4 md:gap-10 items-start">

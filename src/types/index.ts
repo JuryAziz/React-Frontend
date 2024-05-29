@@ -5,6 +5,7 @@ export type Product = {
   stock: number
   description: string
   category: string
+  thumbnail: string
 }
 
 export type User = {

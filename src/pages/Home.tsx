@@ -98,6 +98,13 @@ export default function Home() {
             <Card key={product.productId} className="w-[350px] h-[250px]">
               <Link to={`/product/${product.productId}`}>
                 <CardHeader>
+                  <img
+                    alt="Product Image"
+                    className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+                    height={100}
+                    src={product?.thumbnail}
+                    width={100}
+                  />
                   <CardTitle>{product.name}</CardTitle>
                   <CardDescription>{product.category?.name}</CardDescription>
                 </CardHeader>

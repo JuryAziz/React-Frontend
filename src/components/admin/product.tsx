@@ -41,7 +41,8 @@ export default function ProductPage() {
     price: 0,
     stock: 0,
     description: "",
-    category: ""
+    category: "",
+    thumbnail: ""
   })
 
   const { data: products, error: pError } = useQuery<Product[]>({
@@ -78,7 +79,8 @@ export default function ProductPage() {
       price: 0,
       stock: 0,
       description: "",
-      category: ""
+      category: "",
+      thumbnail: ""
     })
   }
   const handleDeleteProduct = async (id: string): Promise<void> => {
