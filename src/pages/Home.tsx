@@ -59,7 +59,7 @@ export default function Home() {
 
   const onSelect = (value: string) => {
     if (value === "All") queryClient.invalidateQueries({ queryKey: ["products"] })
-    else products?.filter((product) => product?.category?.name === value)
+    else products?.filter((product) => product.category?.name === value)
   }
 
   const handleSearch = (ev: ChangeEvent<HTMLInputElement>) => {
