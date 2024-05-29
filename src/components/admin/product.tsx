@@ -100,6 +100,7 @@ export default function ProductPage() {
         onReset={resetProduct}
       >
         <h3 className="scroll-m-20 text-2xl front-semibold tracking-tighter "> Add new Product </h3>
+
         <Input
           name="name"
           className="my-2"
@@ -107,11 +108,22 @@ export default function ProductPage() {
           placeholder="Name"
           onChange={handleChange}
         />
+
+        <Input
+          name="thumbnail"
+          className="my-2"
+          type="text"
+          placeholder="picture url"
+          required
+          onChange={handleChange}
+        />
+
         <Input
           name="price"
           className="my-2"
           type="number"
           placeholder="Price"
+          required
           onChange={handleChange}
         />
         <Input
@@ -119,6 +131,7 @@ export default function ProductPage() {
           className="my-2"
           type="number"
           placeholder="Stock"
+          required
           onChange={handleChange}
         />
         <Input
@@ -126,6 +139,7 @@ export default function ProductPage() {
           className="my-2"
           type="text"
           placeholder="Description"
+          required
           onChange={handleChange}
         />
         <Select onValueChange={onSelect}>

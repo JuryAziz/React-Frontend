@@ -12,6 +12,7 @@ import { Signup } from "./pages/Signup"
 import PrivateRoute from "./components/PrivateRoute"
 
 import { ThemeProvider } from "@/components/theme-provider"
+import Profile from "./components/user/profile";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Cart />
+      </PrivateRoute>
+    )
+  },
+  {
+    path: "/profile",
+    element: (
+      <PrivateRoute>
+        <Profile />
       </PrivateRoute>
     )
   },
