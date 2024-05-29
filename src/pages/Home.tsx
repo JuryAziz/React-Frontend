@@ -100,8 +100,7 @@ export default function Home() {
                 <CardHeader>
                   <img
                     alt="Product Image"
-                    className="aspect-[2/3] object-contain border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-                    height={100}
+                    className="aspect-[2/3] object-contain w-full rounded-lg overflow-hidden"
                     src={product?.thumbnail}
                   />
                   <CardTitle>{product.name}</CardTitle>
