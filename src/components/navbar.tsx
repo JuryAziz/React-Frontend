@@ -23,8 +23,8 @@ export default function Navbar() {
   const role = decodeUser()?.role
 
   return (
-    <div className="w-full fixed top-0 z-50 flex justify-center mb-20">
-      <Card className="w-full fixed top-0 z-50 flex justify-center mb-20">
+    <div className="w-full fixed top-0 left-0 z-50 flex justify-center mb-20">
+      <Card className="w-full fixed top-0 left-0 z-50 flex justify-center mb-20">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
