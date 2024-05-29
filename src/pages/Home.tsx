@@ -91,7 +91,7 @@ export default function Home() {
         </Select>
       </div>
 
-      <section className="flex flex-col md:flex-row gap-2 justify-center max-w-6xl mx-auto flex-wrap">
+      <section className="flex flex-col md:flex-row gap-2 md:justify-center justify-center max-w-6xl mx-auto flex-wrap">
         {products
           ?.filter((product) => product.name.toLowerCase().includes(searchBy.toLowerCase()))
           .map((product) => (
