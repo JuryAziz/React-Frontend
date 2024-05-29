@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full fixed top-0 left-0 z-50 flex justify-center mb-20">
-      <Card className="w-full fixed top-0 left-0 z-50 flex justify-center mb-20">
+      <Card className="w-full fixed top-0 left-0 z-50 flex justify-center p-2">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
