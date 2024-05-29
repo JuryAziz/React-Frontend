@@ -29,6 +29,7 @@ import productServices from "@/api/products"
 import api from "@/api"
 
 export default function Home() {
+  const queryClient = useQueryClient()
   const [searchBy, setSearchBy] = useState<string>("")
 
   const context = useContext(GlobalContext)
@@ -57,7 +58,8 @@ export default function Home() {
   })
 
   const onSelect = (value: string) => {
-    // * filter by category value contains name of the category
+    if (value === "All") queryClient.invalidateQueries({ queryKey: ["products"] })
+    else products?.filter((product) => product?.category?.name.toLowerCase().includes(value))
   }
 
   const handleSearch = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -79,6 +81,9 @@ export default function Home() {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Categories</SelectLabel>
+              <SelectItem key={"All"} value={"All"}>
+                All
+              </SelectItem>
               {categories?.map((c) => {
                 return (
                   <SelectItem key={c.categoryId} value={c.name}>
