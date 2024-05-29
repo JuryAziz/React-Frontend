@@ -50,7 +50,7 @@ export default function Navbar() {
           )}
           {role === ROLE.User && (
             <NavigationMenuItem>
-              <Link to="/Profile">
+              <Link to="/profile">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Profile
                 </NavigationMenuLink>
