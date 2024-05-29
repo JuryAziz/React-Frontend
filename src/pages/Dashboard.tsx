@@ -10,7 +10,7 @@ export default function Dashboard() {
       <Navbar />
       <Tabs defaultValue="products" className="mx auto">
         <TabsList className="flex justify-center mb-20">
-          <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+          <aside className="fixed left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
             <TabsTrigger value="products" className="w-[400px]">
               Products
             </TabsTrigger>
