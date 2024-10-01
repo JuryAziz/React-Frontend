@@ -1,4 +1,6 @@
-# Boo
+# ![[image](https://github.com/user-attachments/assets/35c9dd81-db61-48a9-9b9c-3fe1b4cf6e0b)](https://candela-by-jay.netlify.app/)
+
+
 # Project: Frontend for E-commerce Website
 
 Tech Stack: React, TypeScript. Styling: Tailwind, MUI, or CSS/SASS
