@@ -1,5 +1,5 @@
-# ![[image](https://github.com/user-attachments/assets/35c9dd81-db61-48a9-9b9c-3fe1b4cf6e0b)](https://candela-by-jay.netlify.app/)
-
+# ![image](https://github.com/user-attachments/assets/35c9dd81-db61-48a9-9b9c-3fe1b4cf6e0b)
+Deploy Link: https://candela-by-jay.netlify.app
 
 # Project: Frontend for E-commerce Website
 
