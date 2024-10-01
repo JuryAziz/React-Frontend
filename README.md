@@ -1,4 +1,9 @@
 # ![image](https://github.com/user-attachments/assets/35c9dd81-db61-48a9-9b9c-3fe1b4cf6e0b)
+![image](https://github.com/user-attachments/assets/1eb4680f-95d6-4d90-9633-dd1d824da37b)
+![image](https://github.com/user-attachments/assets/3f477e0d-68c8-4672-b39e-d03914d21633)
+![1290661809459564595remix-1727788734835](https://github.com/user-attachments/assets/61e5facc-73bc-428f-8228-0bfde3dd6e65)
+![image](https://github.com/user-attachments/assets/174d7a48-5dea-44e0-8f14-71b8d6012e5f)
+
 Deploy Link: https://candela-by-jay.netlify.app
 
 # Project: Frontend for E-commerce Website
